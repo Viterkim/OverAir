@@ -1,0 +1,7 @@
+{
+  "local": {
+    "bootVersion": 1,
+    "rootfsVersion": 1,
+    "application": 1
+  }
+}
