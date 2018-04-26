@@ -5,11 +5,9 @@ var path = require('path');
 // Get version numbers from local files
 let downloadLocation = "http://localhost:3001/update/";
 let myJSONObject = {
-  "local": {
-    "bootVersion": 2,
-    "rootfsVersion": 1,
-    "applicationVersion": 3
-  }
+  "bootVersion": 2,
+  "rootfsVersion": 1,
+  "applicationVersion": 3
 };
 
 //Request type: application, boot, rootfs
