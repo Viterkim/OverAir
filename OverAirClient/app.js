@@ -1,30 +1,16 @@
-var request = require('request');
-var fs = require('fs');
-var path = require('path');
+const request = require('request');
+const fs = require('fs');
+const path = require('path');
+const downloadUtils = require('./utils/DownloadUtils');
+const shellUtils = require('./utils/ShellUtils');
 
 // Get version numbers from local files
-let downloadLocation = "http://localhost:3001/update/";
-let myJSONObject = {
-  "bootVersion": 2,
-  "rootfsVersion": 1,
-  "applicationVersion": 3
+let JSONRequest = {
+  "localVersion": 3
 };
 
-//Request type: application, boot, rootfs
-function downloadFile(saveFileLocation, requestType){
-  let fileName;
-  let r = request({
-    url: downloadLocation + requestType,
-    method: "POST",
-    json: true,
-    body: myJSONObject
-  }).on('response', function(response){
-    //Get the filename from headers
-    fileName = response.headers["content-disposition"].replace(/.*filename="(.+)".*/, '$1');
-    //Save file
-    r.pipe(fs.createWriteStream(path.join(saveFileLocation, fileName)));
-  });
-}
+let downloadLocation = '/Users/viter/Documents/OverAir/OverAirClient/DownloadedFiles';
 
-
-downloadFile('E:/', 'boot');
+downloadUtils.downloadFile('boot', JSONRequest, downloadLocation);
+// shellUtils.runCommand('touch ./DownloadedFiles/bbbb');
+// shellUtils.runFile('testfile.sh');

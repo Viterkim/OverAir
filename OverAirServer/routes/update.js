@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var fs = require('fs');
-var path = require('path');
-var versionUtil = require('../modules/versionUtil');
+const express = require('express');
+const router = express.Router();
+const fs = require('fs');
+const path = require('path');
+const versionUtil = require('../utils/VersionUtil');
 
 router.post('/rootfs', function(req, res, next){
   let rootfsVersion = req.body.localVersion;

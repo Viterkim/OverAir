@@ -1,5 +1,5 @@
-var path = require('path');
-var fs = require('fs');
+const path = require('path');
+const fs = require('fs');
 
 //Returns the highest version number for the application
 function getServerSoftwareNewestVersion(subPath){
