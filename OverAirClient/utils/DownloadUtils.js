@@ -13,13 +13,13 @@ function downloadFile(requestURI, requestObject, saveFileLocation) {
     json: true,
     body: requestObject
   }).on('response', function (response) {
-      if(response.statusCode == 200){
-        //Get the filename from headers
-        fileName = response.headers["content-disposition"].replace(/.*filename="(.+)".*/, '$1');
-        //Save file
-        r.pipe(fs.createWriteStream(path.join(saveFileLocation, fileName)));
+    if (response.statusCode == 200) {
+      //Get the filename from headers
+      fileName = response.headers["content-disposition"].replace(/.*filename="(.+)".*/, '$1');
+      //Save file
+      r.pipe(fs.createWriteStream(path.join(saveFileLocation, fileName)));
     }
-    else{
+    else {
       console.log('Status code ' + response.statusCode);
     }
   });

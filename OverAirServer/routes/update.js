@@ -5,8 +5,7 @@ const path = require('path');
 const versionUtil = require('../utils/VersionUtil');
 
 router.post('/rootfs', function(req, res, next){
-  let rootfsVersion = req.body.localVersion;
-  res.send('diff on the fly + send correct one');
+  res.send("tro på det ");
 });
 
 router.post('/boot', function(req, res, next){
