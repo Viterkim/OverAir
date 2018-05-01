@@ -31,7 +31,7 @@ async function updateKernel(localVersions, updateVersions){
   if (localVersions.kernel < updateVersions.kernel){
     console.log('Updating Kernel from ' + localVersions.kernel + ' to ' + updateVersions.kernel);
     // let kernelDownloadLocation = '/mnt/boot/';
-    let kernelDownloadLocation = '/Users/viter/Documents/OverAir/OverAirClient/tmpBoot';
+    let kernelDownloadLocation = '/Users/viter/Documents/OverAir/OverAirClient/tmp/tmpBoot';
     let fileName = await downloadFile('kernel', 1, kernelDownloadLocation, updateVersions.updatePath);
 
     //Checks of the partition is mounted
@@ -63,5 +63,5 @@ function updateApplication(){
 module.exports = {
   downloadFile,
   updateKernel,
-  udpdateApplication
+  updateApplication
 }
