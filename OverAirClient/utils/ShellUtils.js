@@ -1,6 +1,5 @@
 let exec = require('child_process').exec, child;
 
-
 function runFile(file) {
   child = exec('sh ' + file,
     function (error, stdout, stderr) {

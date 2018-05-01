@@ -32,7 +32,7 @@ function sendNewestFile(type, localVersion, res){
         fileName = 'uboot.' + serverVersion + '.img';
         break;
       case  'kernel':
-        fileName = 'zImage.' + serverVersion;
+        fileName = 'Image.' + serverVersion;
         break;
     }
     let filePath = path.join(__dirname, '../files', '/' + type + '/' , fileName);
