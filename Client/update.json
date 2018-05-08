@@ -2,5 +2,5 @@
     "updatePath" : "http://localhost:3000/update/",
     "kernel": 2,
     "rootfs": 1,
-    "mainApp": 1
+    "mainApp": 2
 }

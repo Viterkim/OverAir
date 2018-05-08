@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-let rootfsPath = '/Users/viter/Documents/OverAir/OverAirClient/tmp/tmpRootfs/';
-let bootPath = '/Users/viter/Documents/OverAir/OverAirClient/tmp/tmpBoot/';
-let appPath = '/Users/viter/Documents/OverAir/OverAirClient/tmp/tmpApp1/Firmware/';
+let rootfsPath = '/Users/viter/Documents/OverAir/Client/tmp/tmpRootfs/';
+let bootPath = '/Users/viter/Documents/OverAir/Client/tmp/tmpBoot/';
+let appPath = '/Users/viter/Documents/OverAir/Client/tmp/tmpApp1/Firmware/';
 // let rootfsPath = '/';
 // let bootPath = '/mnt/boot/';
 // let appPath = '/mnt/application/Firmware';

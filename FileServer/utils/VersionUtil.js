@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-//Returns the highest version number for the application
+//Returns the highest version number for the application (not used currently :-( )
 function getServerSoftwareNewestVersion(subPath, localVersion){
   let folderPath;
   let versionsArr;
@@ -17,7 +17,7 @@ function getServerSoftwareNewestVersion(subPath, localVersion){
           let deltaTo = Number(file.split('.')[2]);
           return deltaTo;
         }
-          return 0;
+        return 0;
       });
       highestVersion = '' + localVersion + '.' + Math.max(...versionsArr);
 
@@ -29,19 +29,19 @@ function getServerSoftwareNewestVersion(subPath, localVersion){
         return Number(file.split('.')[1]);
       });
       highestVersion = Math.max(...versionsArr);
-
       break;
   }
   
-  console.log(highestVersion);
   return highestVersion;
 }
 
-function sendNewestFile(type, localVersion, res){
-  if(localVersion === undefined){
+function sendNewestFile(type, body, res){
+  if(body.localVersion === undefined){
     res.status(404).send('Not Found');
   }
-  let serverVersion = getServerSoftwareNewestVersion(type, localVersion);
+  // let serverVersion = getServerSoftwareNewestVersion(type, localVersion);
+  let localVersion = body.localVersion;
+  let serverVersion = body.requestedVersion;
   
   //Compare local and server version
   if(localVersion >= serverVersion){
@@ -51,7 +51,10 @@ function sendNewestFile(type, localVersion, res){
     let fileName;
     switch(type){
       case 'application':
-        fileName = '/delta/' + 'Firmware.' + serverVersion + '.xdel';
+        fileName = '/delta/' + 'Firmware.' + localVersion + '.' + serverVersion + '.xdel';
+        break;
+      case  'rootfs':
+        fileName = '/delta/' + 'rootfs.' + localVersion + '.' + serverVersion + '.xdel';
         break;
       case  'boot':
         fileName = 'uboot.' + serverVersion + '.img';
@@ -65,11 +68,6 @@ function sendNewestFile(type, localVersion, res){
   }
 }
 
-function diffShit(){
-  console.log("generate diff");
-}
-
-module.exports = { 
-  getServerSoftwareNewestVersion,
+module.exports = {
   sendNewestFile
 };
