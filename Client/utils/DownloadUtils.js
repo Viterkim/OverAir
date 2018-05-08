@@ -1,0 +1,73 @@
+const request = require('request');
+const fs = require('fs');
+const path = require('path');
+
+//Request type: application, boot, rootfs, kernel
+//Localversion setup temporarily...
+function downloadFile(requestURI, localVersion, saveFileLocation, downloadURL) {
+  return new Promise(resolve => {
+    let fileName;
+    let r = request({
+      url: downloadURL + requestURI,
+      method: "POST",
+      json: true,
+      body: { "localVersion": localVersion }
+    }).on('response', function (response) {
+      if (response.statusCode == 200) {
+        //Get the filename from headers
+        fileName = response.headers["content-disposition"].replace(/.*filename="(.+)".*/, '$1');
+        //Save file
+        r.pipe(fs.createWriteStream(path.join(saveFileLocation, fileName)));
+        resolve(fileName);
+      }
+      else {
+        console.log('Status code ' + response.statusCode);
+      }
+    });
+  })
+}
+
+async function updateKernel(localVersions, updateVersions, saveLocation){
+  if (localVersions.kernel < updateVersions.kernel){
+    console.log('Updating Kernel from ' + localVersions.kernel + ' to ' + updateVersions.kernel);
+    
+    let fileName = await downloadFile('kernel', localVersions.kernel, saveLocation, updateVersions.updatePath);
+
+    //Checks of the partition is mounted
+    if(fs.existsSync(saveLocation)){
+      let configFile = saveLocation + '/config.txt';
+  
+      fs.readFile(configFile, 'utf8', function (err,data) {
+        if (err) {
+          return console.log(err);
+        }
+
+        let result = data.replace(/(Image[^]+?).*/g, fileName + '\n');
+        fs.writeFile(configFile, result, 'utf8', function (err) {
+           if (err) return console.log(err);
+           console.log('Done! Updated kernel to version ' + updateVersions.kernel);
+        });
+      });
+    }
+    else{
+      console.log('Boot partition not mounted')
+    }
+  }
+  else{
+    console.log('Kernel already up to date with version ' + localVersions.kernel);
+  }
+}
+
+function updateApplication(localVersions, updateVersions, saveLocation){
+  if (localVersions.mainApp < updateVersions.mainApp){
+    console.log('Updating Application from ' + localVersions.mainApp + ' to ' + updateVersions.mainApp);
+
+    let fileName = await downloadFile('application', localVersions.kernel, saveLocation, updateVersions.updatePath);
+  }
+}
+
+
+module.exports = {
+  updateKernel,
+  updateApplication
+}
