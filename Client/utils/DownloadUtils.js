@@ -1,6 +1,7 @@
 const request = require('request');
 const fs = require('fs');
 const path = require('path');
+const shell = require('./ShellUtils');
 
 //Request type: application, boot, rootfs, kernel
 function downloadFile(requestURI, localVersion, requestedVersion, saveFileLocation, downloadURL) {
@@ -61,13 +62,20 @@ async function updateKernel(localVersions, updateVersions, saveLocation) {
   }
 }
 
-async function updateApplication(localVersions, updateVersions, saveLocation) {
+
+async function updateApplication(localVersions, updateVersions) {
   if (localVersions.mainApp < updateVersions.mainApp) {
     console.log('Updating Application from ' + localVersions.mainApp + ' to ' + updateVersions.mainApp);
+    //Find inactive partition (check version.json)
+    let isApp1Active = require('/Users/viter/Documents/OverAir/Client/tmp/tmpApp1/Firmware/version.json').isActive;
+    let baseFolder = (isApp1Active ? '/Users/viter/Documents/OverAir/Client/tmp/tmpApp2/' : '/Users/viter/Documents/OverAir/Client/tmp/tmpApp1/');
+    let patchName = await downloadFile('application', localVersions.mainApp, updateVersions.mainApp, baseFolder, updateVersions.updatePath);
 
+    //Apply diff, remove old files(Firmware folder), extract
+    let firmwareFile = 'Firmware.tar'
+    shell.runCommand(`xdelta3 -d -s ${firmwareFile} ${patchName} Firmware2.tar`);
 
-    let fileName = await downloadFile('application', localVersions.mainApp, updateVersions.mainApp, saveLocation, updateVersions.updatePath);
-
+    console.log(firmwareFile + ' ' + patchName);
   }
 }
 

@@ -18,8 +18,7 @@ let kernelDownloadLocation = '/Users/viter/Documents/OverAir/Client/tmp/tmpBoot'
 
 //Main app
 // let appDownloadLocation = '/mnt/temp/';
-let appDownloadLocation = '/Users/viter/Documents/OverAir/Client/tmp/tmpTemp';
-downloadUtils.updateApplication(localVersions, updateVersions, appDownloadLocation);
+downloadUtils.updateApplication(localVersions, updateVersions);
 
 //Get diff
 //Apply on tar
