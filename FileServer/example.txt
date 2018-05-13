@@ -1,0 +1,14 @@
+Request:
+
+{
+	"localVersion": 1,
+	"requestedVersion": 3
+}
+
+Config downloaded:
+{
+    "updatePath" : "http://localhost:3000/update/",
+    "kernel": 2,
+    "rootfs": 1,
+    "mainApp": 3
+}

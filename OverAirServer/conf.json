@@ -1,9 +1,0 @@
-{
-    "firmwarePath" : "http://localhost:4000/base/root",
-    "versions": {
-        "root": 1,
-        "boot": 1,
-        "rootfs": 1,
-        "mainApp": 1
-    }
-}
