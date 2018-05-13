@@ -1,12 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-
-let rootfsPath = '/Users/viter/Documents/OverAir/Client/tmp/tmpRootfs/';
-let bootPath = '/Users/viter/Documents/OverAir/Client/tmp/tmpBoot/';
-let appPath = '/Users/viter/Documents/OverAir/Client/tmp/tmpApp1/Firmware/';
-// let rootfsPath = '/';
-// let bootPath = '/mnt/boot/';
-// let appPath = '/mnt/application/Firmware';
+const folderLoc = require('../folderLocations');
 
 //Returns the highest version number for the kernel
 function getNewestKernelVersion(filePath) {
@@ -26,9 +20,14 @@ function getNewestKernelVersion(filePath) {
 
 function getJSONVersions() {
   let versions = {};
-  versions.rootfs = require(rootfsPath + 'version.json').version;
-  versions.mainApp = require(appPath + 'version.json').version;
-  versions.kernel = getNewestKernelVersion(bootPath);
+
+  //Checks for active app version
+  let isApp1Active = require(folderLoc.app1 + 'Firmware/version.json').isActive;
+  let app1Folder = (isApp1Active ? folderLoc.app1 : folderLoc.app2);
+  versions.mainApp = require(app1Folder + 'Firmware/version.json').version;
+
+  versions.rootfs = require(folderLoc.rootfs + 'version.json').version;
+  versions.kernel = getNewestKernelVersion(folderLoc.boot);
   return versions;
 }
 

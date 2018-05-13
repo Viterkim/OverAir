@@ -2,13 +2,14 @@ const request = require('request');
 const fs = require('fs');
 const path = require('path');
 const shell = require('./ShellUtils');
+const folderLoc = require('../folderLocations');
 
 //Request type: application, boot, rootfs, kernel
-function downloadFile(requestURI, localVersion, requestedVersion, saveFileLocation, downloadURL) {
+function downloadFile(downloadURL, saveFileLocation, localVersion, requestedVersion) {
   return new Promise(resolve => {
     let fileName;
     let r = request({
-      url: downloadURL + requestURI,
+      url: downloadURL,
       method: 'POST',
       json: true,
       body: {
@@ -30,11 +31,13 @@ function downloadFile(requestURI, localVersion, requestedVersion, saveFileLocati
   })
 }
 
-async function updateKernel(localVersions, updateVersions, saveLocation) {
+async function updateKernel(localVersions, updateVersions) {
   if (localVersions.kernel < updateVersions.kernel) {
     console.log('Updating Kernel from ' + localVersions.kernel + ' to ' + updateVersions.kernel);
 
-    let fileName = await downloadFile('kernel', localVersions.kernel, updateVersions.kernel ,saveLocation, updateVersions.updatePath);
+    let saveLocation = folderLoc.kernelDownloadLocation;
+    let downloadURL = updateVersions.updatePath + 'kernel';
+    let fileName = await downloadFile(downloadURL, saveLocation, localVersions.kernel, updateVersions.kernel);
 
     //Checks of the partition is mounted
     if (fs.existsSync(saveLocation)) {
@@ -66,16 +69,25 @@ async function updateKernel(localVersions, updateVersions, saveLocation) {
 async function updateApplication(localVersions, updateVersions) {
   if (localVersions.mainApp < updateVersions.mainApp) {
     console.log('Updating Application from ' + localVersions.mainApp + ' to ' + updateVersions.mainApp);
-    //Find inactive partition (check version.json)
-    let isApp1Active = require('/Users/viter/Documents/OverAir/Client/tmp/tmpApp1/Firmware/version.json').isActive;
-    let baseFolder = (isApp1Active ? '/Users/viter/Documents/OverAir/Client/tmp/tmpApp2/' : '/Users/viter/Documents/OverAir/Client/tmp/tmpApp1/');
-    let patchName = await downloadFile('application', localVersions.mainApp, updateVersions.mainApp, baseFolder, updateVersions.updatePath);
 
-    //Apply diff, remove old files(Firmware folder), extract
-    let firmwareFile = 'Firmware.tar'
-    shell.runCommand(`xdelta3 -d -s ${firmwareFile} ${patchName} Firmware2.tar`);
+    //Find inactive partition
+    let isApp1Active = require(folderLoc.app1 + 'Firmware/version.json').isActive;
+    let baseFolder = (isApp1Active ? folderLoc.app2 : folderLoc.app1);
 
-    console.log(firmwareFile + ' ' + patchName);
+    //We checked to see if we should update earlier... However the partition/software we are applying the diff on
+    //is a different version, so we need to update that instead.
+    let currentLocalVersion = require(baseFolder + 'Firmware/version.json').version;
+    let downloadURL = updateVersions.updatePath + 'application';
+    let patchName = await downloadFile(downloadURL, baseFolder, currentLocalVersion, updateVersions.mainApp);
+    let firmwareFile = 'Firmware.tar';
+
+    //Apply diff on the same file, remove old folder and patch, extract new file
+    await shell.runCommand(`cd ${baseFolder} && xdelta3 -f -d -s ${firmwareFile} ${patchName} ${firmwareFile}`);
+    await shell.runCommand(`cd ${baseFolder} && rm -rf Firmware ${patchName}`);
+    await shell.runCommand(`cd ${baseFolder} && tar -xf ${firmwareFile}`);
+
+    //Set new partition as active etc
+    
   }
 }
 
