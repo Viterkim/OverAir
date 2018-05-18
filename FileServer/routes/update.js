@@ -5,11 +5,7 @@ const path = require('path');
 const versionUtil = require('../utils/VersionUtil');
 
 router.post('/rootfs', function(req, res, next){
-  res.send("tro på det ");
-});
-
-router.post('/boot', function(req, res, next){
-  versionUtil.sendNewestFile('boot', req.body, res);
+  versionUtil.sendNewestFile('rootfs', req.body, res);
 });
 
 router.post('/application', function(req, res, next){

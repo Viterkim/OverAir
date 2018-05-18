@@ -19,14 +19,20 @@ function getNewestKernelVersion(filePath) {
 }
 
 function getJSONVersions() {
+   // let activeRootfsFolder = (activeJSON.rootfs == 1 ? folderLoc.rootfs : folderLoc.app2);
   let versions = {};
 
-  //Checks for active app version
-  let isApp1Active = require(folderLoc.app1 + 'Firmware/version.json').isActive;
-  let app1Folder = (isApp1Active ? folderLoc.app1 : folderLoc.app2);
-  versions.mainApp = require(app1Folder + 'Firmware/version.json').version;
+  //Check for which parts are active
+  let activeJSON = require(folderLoc.boot + 'active.json');
 
+  //Current rootfs is active
   versions.rootfs = require(folderLoc.rootfs + 'version.json').version;
+
+  //Checks for active app version
+  let activeAppFolder = (activeJSON.app == 1 ? folderLoc.app1 : folderLoc.app2);
+  versions.app = require(activeAppFolder + 'version.json').version;
+
+  //Searches folder to get highest kernel version from file name
   versions.kernel = getNewestKernelVersion(folderLoc.boot);
   return versions;
 }

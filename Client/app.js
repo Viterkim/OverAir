@@ -1,21 +1,12 @@
-const request = require('request');
 const fs = require('fs');
-const path = require('path');
 const downloadUtils = require('./utils/DownloadUtils');
-const shellUtils = require('./utils/ShellUtils');
 const versionGrabber = require('./utils/VersionGrabber');
+const folderLoc = require('./folderLocations');
 
 //Get local and remote versions
 let updateVersions = require('./update.json');
 let localVersions = versionGrabber.getJSONVersions();
-// console.log(localVersions);
+localVersions.kernel = 1;
 
-//Update loop
-
-//Kernel
-//downloadUtils.updateKernel(localVersions, updateVersions);
-
-//Main app
+downloadUtils.updateKernel(localVersions, updateVersions);
 //downloadUtils.updateApplication(localVersions, updateVersions);
-
-//Rootfs

@@ -60,7 +60,7 @@ function sendNewestFile(type, body, res){
         fileName = 'uboot.' + serverVersion + '.img';
         break;
       case  'kernel':
-        fileName = 'Image.' + serverVersion;
+      fileName = '/delta/' + 'Image.' + localVersion + '.' + serverVersion + '.xdel';
         break;
     }
     let filePath = path.join(__dirname, '../files', type, fileName);
