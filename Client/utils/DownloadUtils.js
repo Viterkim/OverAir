@@ -1,7 +1,6 @@
 const request = require('request');
 const fs = require('fs');
 const path = require('path');
-const shell = require('./ShellUtils');
 const xdelta3 = require('./Xdelta3Utils');
 const folderLoc = require('../folderLocations');
 
@@ -49,31 +48,39 @@ async function updateKernel(localVersions, updateVersions) {
       let oldKernelName = `Image${oldVersion}`;
       let newKernelName = `Image.${updateVersions.kernel}`;
 
-      //Xdelta: base file, delta, new file
-      xdelta3.applyDelta(`${folderLoc.boot}${oldKernelName}`, `${folderLoc.tmp}${fileName}`, `${folderLoc.boot}${newKernelName}`);
+      //Xdelta3: base file, delta, new file
+      await xdelta3.applyDelta(`${folderLoc.boot}${oldKernelName}`, `${folderLoc.tmp}${fileName}`, `${folderLoc.boot}${newKernelName}`);
       
       //Set boot active.json (boot) to newer version
       let activeLocation = folderLoc.boot + 'active.json';
       let active = require(activeLocation);
       active.kernel = updateVersions.kernel;
-      fs.writeFileSync(activeLocation, active, 'utf8');
+      fs.writeFileSync(activeLocation, JSON.stringify(active, null, 2), 'utf8'); //stringify last argument is spacing
 
       //Make sure there's only the 2 newest kernels
       let kernelsToDelete = fs.readdirSync(folderLoc.boot).filter(function (e) {
         //Files which are called Image but NOT oldKernelName or newKernelName
-        return (e.substr(0, 5) === 'Image' && (e !== oldKernelName || e !== newKernelName));
+        return (e.substr(0, 5) === 'Image' && (e !== oldKernelName && e !== newKernelName));
+      });
+      //Kernelstodelete needs to be entire file path
+      kernelsToDelete = kernelsToDelete.map(function(e){
+        return folderLoc.boot + e;
+      });
+      //Cleanup, and delete the files
+      kernelsToDelete.forEach(function(e){
+        fs.unlink(e, function(err){
+          console.log(err);
+        });
       });
 
-      console.log(kernelsToDelete);
-
       //Read uboot config file to set new kernel
-      let configFile = folderLoc.boot + '/config.txt';
+      let configFile = folderLoc.boot + 'config.txt';
       fs.readFile(configFile, 'utf8', function (err, data) {
         if (err) {
           return console.log(err);
         }
 
-        let result = data.replace(/(Image[^]+?).*/g, newKernelName + '\n');
+        let result = data.replace(/(Image[^]+?)\S*/g, newKernelName);
         fs.writeFile(configFile, result, 'utf8', function (err) {
           if (err) return console.log(err);
           console.log('Done! Updated kernel to version ' + updateVersions.kernel);
@@ -115,8 +122,13 @@ async function updateApplication(localVersions, updateVersions) {
   }
 }
 
+async function updateRootfs(localVersions, updateVersions) {
+  console.log('wip');
+}
+
 
 module.exports = {
   updateKernel,
-  updateApplication
+  updateApplication,
+  updateRootfs
 }

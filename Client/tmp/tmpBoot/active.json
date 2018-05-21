@@ -1,3 +1,5 @@
 {
-    
+  "rootfs": 1,
+  "kernel": 2,
+  "app": 1
 }
