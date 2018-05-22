@@ -7,6 +7,6 @@ const folderLoc = require('./folderLocations');
 let updateVersions = require(folderLoc.boot + 'update.json');
 let localVersions = versionGrabber.getJSONVersions();
 
-// updateUtils.updateKernel(localVersions, updateVersions);
-//updateUtils.updateApplication(localVersions, updateVersions);
+updateUtils.updateKernel(localVersions, updateVersions);
+updateUtils.updateApplication(localVersions, updateVersions);
 updateUtils.updateRootfs(localVersions, updateVersions);

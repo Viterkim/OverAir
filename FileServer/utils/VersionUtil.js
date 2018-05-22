@@ -50,14 +50,11 @@ function sendNewestFile(type, body, res){
   else{
     let fileName;
     switch(type){
-      case 'application':
-        fileName = '/delta/' + 'Firmware.' + localVersion + '.' + serverVersion + '.xdel';
+      case 'app':
+        fileName = '/delta/' + 'app.' + localVersion + '.' + serverVersion + '.xdel';
         break;
       case  'rootfs':
         fileName = '/delta/' + 'rootfs.' + localVersion + '.' + serverVersion + '.xdel';
-        break;
-      case  'boot':
-        fileName = 'uboot.' + serverVersion + '.img';
         break;
       case  'kernel':
       fileName = '/delta/' + 'Image.' + localVersion + '.' + serverVersion + '.xdel';

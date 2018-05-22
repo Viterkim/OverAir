@@ -19,7 +19,6 @@ function getNewestKernelVersion(filePath) {
 }
 
 function getJSONVersions() {
-   // let activeRootfsFolder = (activeJSON.rootfs == 1 ? folderLoc.rootfs : folderLoc.app2);
   let versions = {};
 
   //Check for which parts are active
