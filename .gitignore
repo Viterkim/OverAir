@@ -1,7 +1,4 @@
 # Created by https://www.gitignore.io/api/node
-/OverAirClient/tmpBoot
-/OverAirClient/tmp
-/FileServer/files/kernel/
 .DS_Store
 
 ### Node ###
