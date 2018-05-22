@@ -5,7 +5,6 @@ const app2 = '/Users/viter/Documents/OverAir/Client/tmp/tmpApp2/';
 const rootfs = '/Users/viter/Documents/OverAir/Client/tmp/tmpRootfs/';
 const tmp = '/Users/viter/Documents/OverAir/Client/tmp/tmpTmp/';
 const data = '/Users/viter/Documents/OverAir/Client/tmp/tmpData/';
-
 //Real locations
 // const kernelDownloadLocation = '/boot/';
 // const app1 = '/app1';
@@ -15,14 +14,11 @@ const data = '/Users/viter/Documents/OverAir/Client/tmp/tmpData/';
 // const data = '/data';
 
 // Real block devices
-// const device = 'mmcblk0p';
-
+// const device = '/dev/mmcblk0p';
 // Qemu block devices
-const device = 'vda';
-
-function getActiveAppDir(){
-    
-}
+// const device = '/dev/vda';
+// Faking block device for local development
+const device = '/Users/viter/Documents/OverAir/Client/tmp/tmpDev/vda'
 
 module.exports = {
     boot,

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const downloadUtils = require('./utils/DownloadUtils');
+const updateUtils = require('./utils/updateUtils');
 const versionGrabber = require('./utils/VersionGrabber');
 const folderLoc = require('./folderLocations');
 
@@ -7,6 +7,6 @@ const folderLoc = require('./folderLocations');
 let updateVersions = require(folderLoc.boot + 'update.json');
 let localVersions = versionGrabber.getJSONVersions();
 
-downloadUtils.updateKernel(localVersions, updateVersions);
-//downloadUtils.updateApplication(localVersions, updateVersions);
-//downloadUtils.updateRootfs(localVersions, updateVersions);
+// updateUtils.updateKernel(localVersions, updateVersions);
+//updateUtils.updateApplication(localVersions, updateVersions);
+updateUtils.updateRootfs(localVersions, updateVersions);
