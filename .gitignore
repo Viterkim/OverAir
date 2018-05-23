@@ -1,5 +1,7 @@
 # Created by https://www.gitignore.io/api/node
 .DS_Store
+FileServer/files
+Updater/tmp
 
 ### Node ###
 # Logs
