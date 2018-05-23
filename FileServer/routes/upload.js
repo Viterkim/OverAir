@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const uploadUtil = require('../utils/UploadUtil');
+const uploadUtils = require('../utils/UploadUtils');
 
 router.get('/', function(req, res, next) {
   res.render('upload');
@@ -12,8 +12,7 @@ router.post('/', function(req, res, next){
   }
   let uploadedFile = req.files.file;
   let fileType = req.body.fileType;
-  uploadUtil.saveAndGenerateDelta(uploadedFile, fileType);
-  res.send('File uploaded!');
+  uploadUtils.saveAndGenerateDelta(res, uploadedFile, fileType);
 });
 
 module.exports = router;

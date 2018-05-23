@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-const versionUtil = require('../utils/VersionUtil');
+const downloadUtils = require('../utils/DownloadUtils');
 
 router.post('/rootfs', function(req, res, next){
-  versionUtil.sendNewestFile('rootfs', req.body, res);
+  downloadUtils.sendNewestFile('rootfs', req.body, res);
 });
 
 router.post('/app', function(req, res, next){
-  versionUtil.sendNewestFile('app', req.body, res);
+  downloadUtils.sendNewestFile('app', req.body, res);
 });
 
 router.post('/kernel', function(req, res, next){
-  versionUtil.sendNewestFile('kernel', req.body, res);
+  downloadUtils.sendNewestFile('kernel', req.body, res);
 });
 
 
