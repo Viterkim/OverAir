@@ -6,7 +6,6 @@
 
 kernel=Image
 
-
 # To use an external initramfs file
 #initramfs rootfs.cpio.gz
 

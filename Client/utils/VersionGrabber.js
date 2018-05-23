@@ -9,7 +9,7 @@ function getNewestKernelVersion(filePath) {
   }).map(function (file) {
     let result = Number(file.split('.')[1]);
     //Checks if the kernel has a number, if it doesn't assume it's 1
-    if (isNaN(result)) {
+    if (Number.isNaN(result)) {
       return 1;
     }
     return Number(file.split('.')[1]);
@@ -21,12 +21,17 @@ function getNewestKernelVersion(filePath) {
 function getJSONVersions() {
   let versions = {};
 
-  //Checks for active app version
-  let isApp1Active = require(folderLoc.app1 + 'Firmware/version.json').isActive;
-  let app1Folder = (isApp1Active ? folderLoc.app1 : folderLoc.app2);
-  versions.mainApp = require(app1Folder + 'Firmware/version.json').version;
+  //Check for which parts are active
+  let activeJSON = require(folderLoc.boot + 'active.json');
 
+  //Current rootfs is active
   versions.rootfs = require(folderLoc.rootfs + 'version.json').version;
+
+  //Checks for active app version
+  let activeAppFolder = (activeJSON.app == 1 ? folderLoc.app1 : folderLoc.app2);
+  versions.app = require(activeAppFolder + 'version.json').version;
+
+  //Searches folder to get highest kernel version from file name
   versions.kernel = getNewestKernelVersion(folderLoc.boot);
   return versions;
 }

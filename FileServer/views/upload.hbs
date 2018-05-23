@@ -1,0 +1,22 @@
+<h1>Upload a file</h1>
+<t>
+  <b>Kernel:</b> Image file generated after build from buildroot</t>
+<br>
+<t>
+  <b>Rootfs:</b> Generated rootfs.squashfs from buildroot</t>
+<br>
+<t>
+  <b>App:</b> Run mksquashfs appfolder app.squashfs (Not from buildroot)</t>
+<br>
+<form ref='uploadForm' id='uploadForm' action='http://localhost:3000/upload' method='post' encType="multipart/form-data">
+  <select name="fileType">
+    <option value="kernel">kernel</option>
+    <option value="rootfs">rootfs</option>
+    <option value="app">app</option>
+  </select>
+  <br>
+  <input type="file" name="file" />
+  <br>
+
+  <input type='submit' value='Upload!' />
+</form>
