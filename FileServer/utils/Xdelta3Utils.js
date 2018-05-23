@@ -20,9 +20,8 @@ function applyDelta(baseFilePath, deltaPath, newFilePath) {
 
 function generateDelta(oldFileLocation, newFileLocation, deltaSaveLocation) {
   return new Promise((resolve, reject) => {
-    console.log('Generating Deltas');
     //Apply the patch requiring the full path to all files
-    let child = spawn('xdelta3', ['-s', oldFileLocation, newFileLocation, deltaSaveLocation]);
+    let child = spawn('xdelta3', ['-f' ,'-s', oldFileLocation, newFileLocation, deltaSaveLocation]);
 
     child.stderr.on('data', (data) => {
       reject('Xdelta3 error: ' + data);
@@ -35,6 +34,7 @@ function generateDelta(oldFileLocation, newFileLocation, deltaSaveLocation) {
 }
 
 module.exports = {
+
   applyDelta,
   generateDelta
 }

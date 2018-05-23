@@ -9,7 +9,7 @@ function getNewestKernelVersion(filePath) {
   }).map(function (file) {
     let result = Number(file.split('.')[1]);
     //Checks if the kernel has a number, if it doesn't assume it's 1
-    if (isNaN(result)) {
+    if (Number.isNaN(result)) {
       return 1;
     }
     return Number(file.split('.')[1]);
