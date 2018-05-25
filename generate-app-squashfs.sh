@@ -11,12 +11,12 @@ fi
 mkdir bundler bundler/Firmware
 # Version.json
 JSON="{\"version\": $VERSION}"
-echo $JSON > bundler/versions.json
+echo $JSON > bundler/version.json
 
 # Copy Updater folder inside, remove tmp folder
 cp -r Updater bundler/
-rm -rf bundler/tmp
+rm -rf bundler/Updater/tmp
 
 # mksquashfs of the content
-mksquashfs bundler/ app.squashfs
+mksquashfs bundler/ app.$VERSION.squashfs
 rm -rf bundler
