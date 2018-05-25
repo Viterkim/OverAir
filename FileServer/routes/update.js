@@ -5,15 +5,15 @@ const path = require('path');
 const downloadUtils = require('../utils/DownloadUtils');
 
 router.post('/rootfs', function(req, res, next){
-  downloadUtils.sendNewestFile('rootfs', req.body, res);
+  downloadUtils.sendNewFile('rootfs', req.body, res);
 });
 
 router.post('/app', function(req, res, next){
-  downloadUtils.sendNewestFile('app', req.body, res);
+  downloadUtils.sendNewFile('app', req.body, res);
 });
 
 router.post('/kernel', function(req, res, next){
-  downloadUtils.sendNewestFile('kernel', req.body, res);
+  downloadUtils.sendNewFile('kernel', req.body, res);
 });
 
 

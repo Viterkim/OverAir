@@ -1,5 +1,4 @@
 Request:
-
 {
 	"localVersion": 1,
 	"requestedVersion": 3

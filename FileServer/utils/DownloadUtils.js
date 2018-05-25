@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 
-function sendNewestFile(type, body, res){
+function sendNewFile(type, body, res){
     if(body.localVersion === undefined){
         res.status(404).send('Not Found');
     }
@@ -31,5 +31,5 @@ function sendNewestFile(type, body, res){
 }
 
 module.exports = {
-    sendNewestFile
+    sendNewFile
 }
